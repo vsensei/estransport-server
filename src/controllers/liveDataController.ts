@@ -38,8 +38,6 @@ const getMockedTransportData = () => {
     .readFileSync(`${config.mocksPath}/gps.txt`, 'utf-8')
     .trim();
 
-  console.log('Got the mocked data', transportData.length);
-
   return calculateTransportData(transportData);
 };
 
@@ -51,8 +49,6 @@ const fetchRemoteTransportData = async () => {
   const text = await response.text();
   const transportData = calculateTransportData(text.trim());
 
-  console.log('Fetched the remote data');
-
   return transportData;
 };
 
@@ -62,5 +58,4 @@ export const getLiveTransportData = async (req: Request, res: Response) => {
     : await fetchRemoteTransportData();
 
   res.json(transportData);
-  console.log('transportData sent', transportData.length);
 };

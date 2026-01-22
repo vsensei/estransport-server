@@ -57,8 +57,11 @@ export const fetchAutocompleteLocations = async (searchQuery: string) => {
   });
 
   const locations = (await response.json()) as AutocompleteLocationsResponse;
+  const { features } = locations;
 
-  return locations.features;
+  console.log('[FETCH] Sent autocomplete locations', features.length);
+
+  return features;
 };
 
 export const fetchItineraries = async (itineraryParams: {
@@ -67,8 +70,6 @@ export const fetchItineraries = async (itineraryParams: {
   finishLat: string;
   finishLon: string;
 }) => {
-  console.log('itineraryParams', itineraryParams);
-
   if (!config.apiKey) {
     throw new Error('No API key');
   }
@@ -76,6 +77,11 @@ export const fetchItineraries = async (itineraryParams: {
   const query = buildItineraryQuery(itineraryParams);
   const response = await fetchData(query, config.apiKey);
   const itineraries = (await response.json()) as IniteraryResponse;
+
+  console.log(
+    '[FETCH] Sent itineraries',
+    itineraries.data.planConnection.edges.length,
+  );
 
   return itineraries;
 };
@@ -88,6 +94,8 @@ export const fetchStopInfo = async (stopId: string) => {
   const query = buildStopInfoQuery(stopId);
   const response = await fetchData(query, config.apiKey);
   const stopInfo = (await response.json()) as StopInfoResponse;
+
+  console.log('[FETCH] Sent stop info', stopInfo.data.stop.gtfsId);
 
   return stopInfo;
 };
@@ -105,6 +113,9 @@ export const fetchStops = async (stopsParams: {
   const query = buildStopsQuery(stopsParams);
   const response = await fetchData(query, config.apiKey);
   const stopsResponse = (await response.json()) as StopsAndStationsDataResponse;
+  const stops = stopsResponse.data.stopsByBbox;
 
-  return stopsResponse.data.stopsByBbox;
+  console.log('[FETCH] Sent stops', stops.length);
+
+  return stops;
 };

@@ -172,23 +172,27 @@ export interface IniteraryResponse {
 }
 
 export interface StopInfoResponse {
-  gtfsId: string;
-  lat: number;
-  lon: number;
-  name: string;
-  patterns: Array<{
-    code: string;
-    directionId: number;
-    headsign: string;
-    id: string;
-    route: {
+  data: {
+    stop: {
       gtfsId: string;
-      shortName: string;
-      longName: string;
-      mode: string;
+      lat: number;
+      lon: number;
+      name: string;
+      patterns: Array<{
+        code: string;
+        directionId: number;
+        headsign: string;
+        id: string;
+        route: {
+          gtfsId: string;
+          shortName: string;
+          longName: string;
+          mode: string;
+        };
+      }>;
+      stoptimesWithoutPatterns: StopTime[];
     };
-  }>;
-  stoptimesWithoutPatterns: StopTime[];
+  };
 }
 
 export interface StopsAndStationsDataResponse {
